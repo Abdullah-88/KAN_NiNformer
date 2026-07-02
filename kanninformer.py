@@ -155,16 +155,16 @@ class KANLinear(torch.nn.Module):
         assert x.dim() == 2 and x.size(1) == self.in_features
         batch = x.size(0)
 
-        splines = self.b_splines(x)  # (batch, in, coeff)
-        splines = splines.permute(1, 0, 2)  # (in, batch, coeff)
-        orig_coeff = self.scaled_spline_weight  # (out, in, coeff)
-        orig_coeff = orig_coeff.permute(1, 2, 0)  # (in, coeff, out)
-        unreduced_spline_output = torch.bmm(splines, orig_coeff)  # (in, batch, out)
+        splines = self.b_splines(x)  
+        splines = splines.permute(1, 0, 2)  
+        orig_coeff = self.scaled_spline_weight  
+        orig_coeff = orig_coeff.permute(1, 2, 0)  
+        unreduced_spline_output = torch.bmm(splines, orig_coeff)  
         unreduced_spline_output = unreduced_spline_output.permute(
             1, 0, 2
-        )  # (batch, in, out)
+        )  
 
-        # sort each channel individually to collect data distribution
+       
         x_sorted = torch.sort(x, dim=0)[0]
         grid_adaptive = x_sorted[
             torch.linspace(
@@ -222,7 +222,6 @@ class FeedForward(nn.Module):
         )
     def forward(self, x):
         return self.net(x)
-
 
 
 
