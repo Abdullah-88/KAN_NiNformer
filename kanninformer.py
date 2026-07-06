@@ -164,7 +164,6 @@ class KANLinear(torch.nn.Module):
             1, 0, 2
         )  
 
-       
         x_sorted = torch.sort(x, dim=0)[0]
         grid_adaptive = x_sorted[
             torch.linspace(
@@ -223,15 +222,12 @@ class FeedForward(nn.Module):
     def forward(self, x):
         return self.net(x)
 
-
-
 class KANGatingUnit(nn.Module):
     def __init__(self,dim, hidden_dim, dropout):
         super().__init__()
         self.proj = nn.Linear(dim,dim)      
         self.kan = KANLinear(dim, dim)
        
-
     def forward(self, x):
         u, v = x, x 
         u = self.proj(u)   
@@ -239,9 +235,8 @@ class KANGatingUnit(nn.Module):
         out = u * v
         return out
 
-
 class KANNiNformerBlock(nn.Module):
-    def __init__(self, d_model, d_ffn,dropout):
+    def __init__(self, d_model, d_ffn, dropout):
         super().__init__()
        
         self.norm = nn.LayerNorm(d_model)       
@@ -258,22 +253,13 @@ class KANNiNformerBlock(nn.Module):
         out = x + residual
         return out
 
-
 class KANNiNformer(nn.Module):
-    def __init__(self, d_model, d_ffn,num_layers,dropout):
+    def __init__(self, d_model, d_ffn, num_layers, dropout):
         super().__init__()
         
         self.model = nn.Sequential(
-            *[KANNiNformerBlock(d_model, d_ffn,dropout) for _ in range(num_layers)]
+            *[KANNiNformerBlock(d_model, d_ffn, dropout) for _ in range(num_layers)]
         )
 
     def forward(self, x):
         return self.model(x)
-
-
-
-
-
-
-
-
